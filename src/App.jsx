@@ -1,120 +1,53 @@
-import { nanoid } from 'nanoid'
-import { useState } from 'react';
-import './index.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink,
+} from "react-router-dom";
+import Home from "./components/Home.jsx";
+import Saludo from "./components/Saludo.jsx";
+import Todo from "./components/todo/Todo.jsx";
+import Rick from "./components/rick/Rick.jsx";
+import AgeOfEmpires from "./components/aoe/AgeOfEmpires.jsx";
+import Civilizacion from "./components/aoe/Civilizacion.jsx";
 
 function App() {
-  const [todos, setTodos] = useState([]);
-  const [error, setError] = useState('');
-  const [todo, setTodo] = useState('');
-  const [edit, setEdit] = useState(false);  
-  const [id, setId] = useState('');  
-  
-  const addTodo = (e) => {        
-      e.preventDefault()
-      if(!todo.trim()){            
-          setError('write something please')            
-          return;
-      }
-      
-      setTodos([...todos, {id: nanoid(), content: todo}]);
-      setError('')
-      setTodo('')                                       
-  }
-
-  const getTodo = item => {
-    setEdit(true);
-    setTodo(item.content)
-    setId(item.id)
-    document.getElementById('todo').focus()
-  }
-
-  const updateTodo = e => {
-    e.preventDefault()
-    if(!todo.trim()){            
-      setError('write something please')            
-      return;
-    }
-
-    const updated = todos.map(item => item.id === id ? {id, content: todo} : item)
-    setTodos(updated)
-    setEdit(false)
-    setTodo('')
-    setId('')
-    
-  }
-
-  const removeTodo = (id) =>{
-    const filterList = todos.filter(item => item.id !== id)
-    setTodos(filterList)
-  }
-
   return (
-    <div className="container mt-4">
-      <h1 className="text-center">CRUD Simple</h1>
-      <div className="row">
-
-        <div className="col-8">
-          <h4 className="text-center">Lista de todos</h4>
-          <ul className="list-group">
-            {
-              todos.length > 0 
-                ? todos.map(item => (
-                  <li className="list-group-item" key={item.id}>
-                    <span className="lead">{item.content}</span>              
-                    <button 
-                      className="btn btn-danger btn-sm float-end mx-2" 
-                      onClick={()=> removeTodo(item.id)}
-                    >Eliminar</button>              
-                    <button 
-                      className="btn btn-warning btn-sm float-end"
-                      onClick={()=> getTodo(item)}  
-                    >Editar</button>              
-                  </li>
-                ))
-                : <h3>No hay tareas</h3>
-            }
-          </ul>
+    <Router>
+      <div className="container mt-5">
+        <div className="btn-group d-flex">
+          <NavLink to="/" className="btn btn-info">
+            Inicio
+          </NavLink>
+          <NavLink to="/saludo" className="btn" activeClassName="btn-success">
+            Saludo
+          </NavLink>
+          <NavLink to="/todo" className="btn" activeClassName="btn-success">
+            Todo
+          </NavLink>
+          <NavLink to="/rick" className="btn" activeClassName="btn-success">
+            Rick & Morty
+          </NavLink>
+          <NavLink
+            to="/civilizaciones"
+            className="btn"
+            activeClassName="btn-success"
+          >
+            Civilizaciones Age of Empires
+          </NavLink>
         </div>
-
-        <div className="col-4">
-          <h4 className="text-center">{edit ? 'Edit todo' : 'Add todo'}</h4>            
-          <span className="text-danger">{error}</span>
-            <form onSubmit={edit ? updateTodo : addTodo}>
-                <input                     
-                    type="text" 
-                    id='todo'
-                    name="todo" 
-                    placeholder='todo'
-                    className='form-control mb-3'
-                    onChange={e => {
-                      setTodo(e.target.value); 
-                      setError(false);
-                    }} 
-                    value={todo}
-                    />
-                {
-                  edit 
-                  ? <button className='btn btn-warning form-control' type="submit">Edit</button>
-                  : <button className='btn btn-block form-control' type="submit">Save</button>
-                }
-            </form>      
-        </div>
-      </div>      
-    </div>
+        <hr />
+        <Switch>
+          <Route path="/civilizaciones/:id" component={Civilizacion} />
+          <Route path="/civilizaciones" component={AgeOfEmpires} />
+          <Route path="/todo" component={Todo} />
+          <Route path="/saludo" component={Saludo} />
+          <Route path="/rick" component={Rick} />
+          <Route path="/" component={Home} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
-
-/* 
-  <hr />
-  <ul className="container mt-8">
-      {
-          frutas.length > 0 
-          ? frutas.map((item, i)=>(
-              <li key={i}>{item.fruta} - {item.description}</li>
-            ))
-          : <h3>Agrega frutas</h3>
-      }
-  </ul>
-*/
 
 export default App;
