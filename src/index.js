@@ -1,12 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import ReactDOM from "react-dom";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import App from "./App";
+import Todo from "./components/todo/Todo";
+import Rick from "./components/rick/Rick";
+import NotFound from "./NotFound";
+
+import "./index.css";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />}>
+        <Route path="todo" element={<Todo />} />
+        <Route path="rick" element={<Rick />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  </BrowserRouter>,
+  document.getElementById("root")
 );
-
