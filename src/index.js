@@ -12,7 +12,7 @@ import "./index.css";
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App />}>
+      <Route path="/react-course" element={<App />}>
         <Route path="todo" element={<Todo />} />
         <Route path="rick" element={<Rick />} />
         <Route path="*" element={<NotFound />} />
