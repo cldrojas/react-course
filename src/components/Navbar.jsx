@@ -4,7 +4,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-dark bg-dark">
       <div className="container">
-        <NavLink to="/" className="btn  btn-outline-success">
+        <NavLink to="./" className="btn  btn-outline-success">
           Home
         </NavLink>
         <NavLink to="todo" className="btn  btn-outline-success">

@@ -1,13 +1,23 @@
 import Swal from "sweetalert2";
 import { nanoid } from "nanoid";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [todo, setTodo] = useState("");
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("todos")) {
+      setTodos(JSON.parse(localStorage.getItem("todos")));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const addTodo = (e) => {
     e.preventDefault();
@@ -48,10 +58,10 @@ const Todo = () => {
   };
   return (
     <div className="container mt-4">
-      <h1 className="text-center">CRUD Simple</h1>
+      <h1 className="text-center">Tareas</h1>
       <div className="row">
         <div className="col-8">
-          <h4 className="text-center">Lista de todos</h4>
+          <h4 className="text-center">Lista de tareas</h4>
           <ul className="list-group">
             {todos.length > 0 ? (
               todos.map((item) => (
@@ -78,7 +88,9 @@ const Todo = () => {
         </div>
 
         <div className="col-4">
-          <h4 className="text-center">{edit ? "Edit todo" : "Add todo"}</h4>
+          <h4 className="text-center">
+            {edit ? "Editar tarea" : "Agregar tarea"}
+          </h4>
           <form onSubmit={edit ? updateTodo : addTodo}>
             <input
               type="text"
@@ -93,11 +105,11 @@ const Todo = () => {
             />
             {edit ? (
               <button className="btn btn-warning form-control" type="submit">
-                Edit
+                Editar
               </button>
             ) : (
               <button className="btn btn-success form-control" type="submit">
-                Save
+                Agregar
               </button>
             )}
           </form>
